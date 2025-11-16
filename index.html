@@ -1,694 +1,84 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <title>الشخص والهوية - عرض تفاعلي</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <style>
-    :root {
-      --bg-dark: #050816;
-      --bg-card: #0f172a;
-      --accent: #38bdf8;
-      --accent-soft: rgba(56,189,248,0.2);
-      --text-main: #e5e7eb;
-      --text-muted: #9ca3af;
-      --radius-xl: 18px;
-      --shadow-soft: 0 18px 45px rgba(15,23,42,0.9);
-      --transition-fast: 0.35s ease;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-      background: radial-gradient(circle at top left, #1f2937 0, #020617 45%);
-      color: var(--text-main);
-      line-height: 1.7;
-      min-height: 100vh;
-      scroll-behavior: smooth;
-    }
-
-    /* ---------- Global Layout ---------- */
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(16px);
-      background: linear-gradient(
-        to left,
-        rgba(15,23,42,0.9),
-        rgba(15,23,42,0.6)
-      );
-      border-bottom: 1px solid rgba(148,163,184,0.25);
-    }
-
-    .nav {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0.6rem 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    .nav-title {
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      color: #f9fafb;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 0.7rem;
-      flex-wrap: wrap;
-      font-size: 0.85rem;
-    }
-
-    .nav-links a {
-      padding: 0.2rem 0.8rem;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: var(--transition-fast);
-    }
-
-    .nav-links a:hover {
-      color: #f9fafb;
-      border-color: var(--accent-soft);
-      background: rgba(15,23,42,0.9);
-    }
-
-    main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 1.5rem 1rem 3rem;
-    }
-
-    section {
-      margin: 2.5rem 0;
-    }
-
-    h1, h2, h3 {
-      font-weight: 700;
-      letter-spacing: 0.02em;
-    }
-
-    h1 {
-      font-size: clamp(1.9rem, 3vw, 2.4rem);
-      margin-bottom: 0.4rem;
-    }
-
-    h2 {
-      font-size: clamp(1.4rem, 2.4vw, 1.8rem);
-      margin-bottom: 0.8rem;
-    }
-
-    h3 {
-      font-size: 1.05rem;
-      margin-bottom: 0.3rem;
-    }
-
-    p {
-      font-size: 0.95rem;
-      color: var(--text-main);
-    }
-
-    .muted {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    /* ---------- Hero ---------- */
-
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-      gap: 1.6rem;
-      align-items: center;
-      margin-top: 1.2rem;
-    }
-
-    @media (max-width: 760px) {
-      .hero {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.18rem 0.8rem;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(148,163,184,0.4);
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-bottom: 0.6rem;
-    }
-
-    .hero-gradient {
-      font-weight: 800;
-      background: linear-gradient(120deg, #a855f7, #38bdf8, #f97316);
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.7rem;
-      margin-top: 1.1rem;
-    }
-
-    .btn {
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      padding: 0.45rem 1.2rem;
-      font-size: 0.9rem;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      transition: var(--transition-fast);
-      text-decoration: none;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #38bdf8, #6366f1);
-      color: #020617;
-      box-shadow: 0 12px 35px rgba(37,99,235,0.6);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 18px 45px rgba(37,99,235,0.85);
-    }
-
-    .btn-ghost {
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(148,163,184,0.4);
-      color: var(--text-main);
-    }
-
-    .btn-ghost:hover {
-      background: rgba(15,23,42,1);
-      border-color: var(--accent);
-    }
-
-    .hero-orbit {
-      position: relative;
-      min-height: 220px;
-      border-radius: 999px;
-      background: radial-gradient(circle at center, #0b1120 0, #020617 60%);
-      border: 1px solid rgba(148,163,184,0.25);
-      box-shadow: var(--shadow-soft);
-      overflow: hidden;
-    }
-
-    .hero-orbit::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 10% 10%, rgba(56,189,248,0.35), transparent 60%),
-        radial-gradient(circle at 80% 90%, rgba(168,85,247,0.28), transparent 55%);
-      opacity: 0.7;
-    }
-
-    .orbit-center {
-      position: absolute;
-      inset-inline: 50%;
-      top: 50%;
-      transform: translate(50%, -50%); /* RTL adjust */
-      width: 120px;
-      height: 120px;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(148,163,184,0.7);
-      box-shadow: 0 0 40px rgba(56,189,248,0.6);
-      z-index: 2;
-    }
-
-    .orbit-center span {
-      text-align: center;
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-
-    .orbit-dot {
-      position: absolute;
-      width: 80px;
-      height: 32px;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.95);
-      border: 1px solid rgba(148,163,184,0.6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      backdrop-filter: blur(16px);
-      animation: orbit 14s linear infinite;
-      transform-origin: -120px center;
-    }
-
-    .orbit-dot:nth-child(2) { top: 12%; right: 16%; animation-delay: -3s; }
-    .orbit-dot:nth-child(3) { bottom: 12%; left: 12%; animation-delay: -7s; }
-    .orbit-dot:nth-child(4) { top: 60%; right: 75%; animation-delay: -10s; }
-
-    @keyframes orbit {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(-360deg); }
-    }
-
-    /* ---------- Cards & Layouts ---------- */
-
-    .grid {
-      display: grid;
-      gap: 1rem;
-    }
-
-    .grid-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    @media (max-width: 720px) {
-      .grid-2 {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .card {
-      background: linear-gradient(145deg, rgba(15,23,42,0.98), #020617);
-      border-radius: var(--radius-xl);
-      border: 1px solid rgba(148,163,184,0.4);
-      padding: 1.1rem 1rem;
-      box-shadow: var(--shadow-soft);
-      position: relative;
-      overflow: hidden;
-      isolation: isolate;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      opacity: 0;
-      background: radial-gradient(circle at top, rgba(56,189,248,0.15), transparent 60%);
-      transition: opacity var(--transition-fast);
-      z-index: -1;
-    }
-
-    .card:hover::before {
-      opacity: 1;
-    }
-
-    .card-tag {
-      display: inline-flex;
-      padding: 0.1rem 0.6rem;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(148,163,184,0.5);
-      font-size: 0.78rem;
-      color: var(--accent);
-      margin-bottom: 0.4rem;
-    }
-
-    ul {
-      list-style: none;
-      margin-top: 0.4rem;
-    }
-
-    ul li {
-      position: relative;
-      padding-inline-start: 1rem;
-      margin-bottom: 0.3rem;
-      font-size: 0.93rem;
-    }
-
-    ul li::before {
-      content: "•";
-      position: absolute;
-      inset-inline-start: 0;
-      color: var(--accent);
-      font-weight: bold;
-    }
-
-    .philosopher-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
-    }
-
-    .philo-card {
-      border-radius: var(--radius-xl);
-      background: radial-gradient(circle at top, rgba(56,189,248,0.15), #020617);
-      border: 1px solid rgba(148,163,184,0.5);
-      padding: 0.9rem 0.9rem 0.95rem;
-      box-shadow: var(--shadow-soft);
-      transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
-      cursor: default;
-    }
-
-    .philo-card:hover {
-      transform: translateY(-6px) translateX(-2px);
-      box-shadow: 0 20px 50px rgba(15,23,42,0.95);
-      border-color: var(--accent);
-    }
-
-    .philo-name {
-      font-weight: 700;
-      margin-bottom: 0.15rem;
-      font-size: 0.98rem;
-    }
-
-    .philo-pill {
-      font-size: 0.78rem;
-      color: var(--accent);
-      margin-bottom: 0.35rem;
-    }
-
-    .philo-key {
-      font-size: 0.88rem;
-      color: var(--text-main);
-    }
-
-    /* ---------- Reveal Animations ---------- */
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition:
-        opacity 0.7s ease-out,
-        transform 0.7s ease-out;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .delay-1 { transition-delay: 0.12s; }
-    .delay-2 { transition-delay: 0.24s; }
-    .delay-3 { transition-delay: 0.36s; }
-
-    footer {
-      margin-top: 2rem;
-      padding-top: 1rem;
-      border-top: 1px solid rgba(148,163,184,0.25);
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      text-align: center;
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>الشخص والهوية – المقدمة</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: #0b1120;
+  color: #e5e7eb;
+  margin: 0;
+  padding: 0;
+}
+header {
+  padding: 1rem;
+  text-align: center;
+  background: #111827;
+  border-bottom: 1px solid #1f2937;
+}
+h1 { font-size: 2rem; margin-bottom: .3rem; }
+.names {
+  color: #38bdf8;
+  font-weight: bold;
+  margin-top: .5rem;
+}
+.container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+.card {
+  background: #1e293b;
+  padding: 1rem 1.4rem;
+  margin: 1rem 0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: .3s;
+  border: 1px solid #334155;
+}
+.card:hover {
+  transform: scale(1.02);
+  background: #0f172a;
+  border-color: #38bdf8;
+}
+a { text-decoration: none; color: inherit; }
+footer {
+  text-align: center;
+  padding: 1rem;
+  margin-top: 2rem;
+  border-top: 1px solid #1f2937;
+  color: #94a3b8;
+}
+</style>
 </head>
 
 <body>
-  <!-- ---------- Navigation ---------- -->
-  <header>
-    <nav class="nav">
-      <div class="nav-title">مجزوءة الوضع البشري</div>
-      <div class="nav-links">
-        <a href="#intro">مدخل</a>
-        <a href="#concepts">المفاهيم</a>
-        <a href="#questions">الإشكالات</a>
-        <a href="#philosophers">مواقف الفلاسفة</a>
-        <a href="#synthesis">خلاصة</a>
-        <a href="#exam">نص تطبيقي</a>
-      </div>
-    </nav>
-  </header>
 
-  <main>
-    <!-- ---------- Hero / Intro ---------- -->
-    <section id="intro" class="reveal">
-      <div class="hero">
-        <div>
-          <div class="hero-badge">
-            الشخص والهوية · الفلسفة
-          </div>
-          <h1>
-            <span class="hero-gradient">الشخص والهوية</span><br />
-            من أنا؟ وما الذي يجعلني أنا؟
-          </h1>
-          <p class="muted">
-            هذا العرض التفاعلي يلخص الدرس كما في الوثيقة:
-            تعريف الشخص، إشكال الهوية، ومواقف أهم الفلاسفة من ديكارت إلى شوبنهاور،
-            مع خلاصة تساعدك في التحضير للامتحان.
-          </p>
-          <div class="hero-actions">
-            <a href="#philosophers" class="btn btn-primary">
-              استعراض مواقف الفلاسفة
-            </a>
-            <a href="#exam" class="btn btn-ghost">
-              التركيز على ما يهم في الامتحان
-            </a>
-          </div>
-        </div>
+<header>
+  <h1>الشخص والهوية</h1>
+  <div class="names">إعداد: عمران ادريسي – أنوار الابراهيمي – ريان لعيدي</div>
+</header>
 
-        <div class="hero-orbit">
-          <div class="orbit-center">
-            <span>ثبات الهوية<br>رغم تغيّر الشخص</span>
-          </div>
-          <div class="orbit-dot">فكر</div>
-          <div class="orbit-dot">شعور</div>
-          <div class="orbit-dot">ذاكرة</div>
-          <div class="orbit-dot">إرادة / لاشعور</div>
-        </div>
-      </div>
-    </section>
+<div class="container">
+  <a href="concepts.html">
+    <div class="card">📘 المفاهيم الأساسية</div>
+  </a>
+  <a href="questions.html">
+    <div class="card">❓ الإشكالات والمفارقة</div>
+  </a>
+  <a href="philosophers.html">
+    <div class="card">👤 مواقف الفلاسفة</div>
+  </a>
+  <a href="summary.html">
+    <div class="card">🧩 خلاصة عامة</div>
+  </a>
+</div>
 
-    <!-- ---------- Concepts ---------- -->
-    <section id="concepts" class="reveal delay-1">
-      <h2>المفاهيم الأساسية</h2>
-      <div class="grid grid-2">
-        <article class="card">
-          <div class="card-tag">تعريف الشخص</div>
-          <h3>الشخص</h3>
-          <p>
-            الذات الواعية التي تتحمل مسؤوليتها الأخلاقية والقانونية، وتشعر بأنها
-            واحدة رغم تعدد الأدوار وتغيّر الظروف.
-          </p>
-          <h3 style="margin-top:0.7rem;">الهوية</h3>
-          <p>
-            الجوهر الثابت الذي يجعل الشخص هو نفسه عبر الزمن، على الرغم من
-            التغيّرات الجسدية والنفسية.
-          </p>
-        </article>
+<footer>
+  إنجاز التلاميذ: عمران ادريسي – أنوار الابراهيمي – ريان لعيدي
+</footer>
 
-        <article class="card">
-          <div class="card-tag">مفاهيم مساعدة</div>
-          <ul>
-            <li><strong>الإرادة:</strong> رغبة متواصلة في الفعل وتحقيق الأهداف.</li>
-            <li><strong>الشعور:</strong> وعي الشخص بحالاته النفسية وأفعاله.</li>
-            <li><strong>الذاكرة:</strong> تخزين التجارب الماضية واسترجاعها.</li>
-            <li><strong>المفارقة:</strong> الشخص يتغير، ومع ذلك يحس أنه هو نفسه دائماً.</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <!-- ---------- Questions / Paradox ---------- -->
-    <section id="questions" class="reveal delay-2">
-      <h2>المفارقة والإشكالات الفلسفية</h2>
-      <div class="grid grid-2">
-        <article class="card">
-          <div class="card-tag">المفارقة</div>
-          <p>
-            إذا كان الشخص يتغيّر حسب الزمان والمكان ويلعب أدواراً متعددة
-            (تلميذ، صديق، ابن...)، فكيف يظل مع ذلك يشعر بأنه
-            <strong>هو هو</strong>؟
-          </p>
-        </article>
-
-        <article class="card">
-          <div class="card-tag">أسئلة الدرس</div>
-          <ul>
-            <li>ما أساس هوية الشخص؟ الفكر أم الشعور أم الإرادة أم اللاشعور؟</li>
-            <li>هل هوية الشخص ثابتة أم متغيرة؟</li>
-            <li>هل نعرف ذواتنا بالعقل فقط، أم بالتجربة والذاكرة أيضاً؟</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <!-- ---------- Philosophers ---------- -->
-    <section id="philosophers" class="reveal">
-      <h2>مواقف الفلاسفة حول أساس هوية الشخص</h2>
-
-      <p class="muted" style="margin-bottom:0.6rem;">
-        يمكن تقسيم المواقف إلى اتجاهين: من يرى الهوية ثابتة، ومن يراها
-        متغيرة. لكل فيلسوف عنصر يعتبره أساساً للهوية.
-      </p>
-
-      <h3 style="margin-top:0.9rem;">أولاً: طبيعة هوية الشخص ثابتة</h3>
-      <div class="philosopher-grid" style="margin-top:0.5rem;">
-        <article class="philo-card">
-          <div class="philo-name">رينيه ديكارت</div>
-          <div class="philo-pill">الفكر أساس الهوية</div>
-          <p class="philo-key">
-            بدأ بالشك في كل المعارف والحواس، وخلص إلى أن الشيء الوحيد
-            اليقيني هو التفكير نفسه:<br>
-            <strong>«أنا أفكر إذن أنا موجود»</strong>.<br>
-            ما دام الأنا يفكر فهو موجود، والفكر هو جوهر الشخص وهويته.
-          </p>
-        </article>
-
-        <article class="philo-card">
-          <div class="philo-name">جون لوك</div>
-          <div class="philo-pill">الشعور والذاكرة</div>
-          <p class="philo-key">
-            العقل في البداية صفحة بيضاء تكتب عليها التجارب. أساس الهوية هو
-            <strong>الشعور</strong> المتصل بالأفعال، كما تحفظه
-            <strong>الذاكرة</strong>. كلما امتد شعور الشخص إلى ماضيه امتدت
-            هويته.
-          </p>
-        </article>
-
-        <article class="philo-card">
-          <div class="philo-name">جول لاشوليي</div>
-          <div class="philo-pill">الطبع والذاكرة</div>
-          <p class="philo-key">
-            ما يجعل الفرد يحس أنه هو نفسه هو
-            <strong>طبعه الخاص</strong> الذي يميّزه، مضافاً إلى
-            <strong>عادات</strong> وتجارب خزنتها الذاكرة عبر الزمن.
-          </p>
-        </article>
-
-        <article class="philo-card">
-          <div class="philo-name">سيغموند فرويد</div>
-          <div class="philo-pill">اللاشعور</div>
-          <p class="philo-key">
-            يتكوّن الجهاز النفسي من: الهو، الأنا، الأنا الأعلى. يرى أن
-            <strong>اللاشعور</strong>، بما يحتويه من رغبات مكبوتة، يوجّه
-            اختياراتنا، وبالتالي يحدد في العمق هويتنا الشخصية.
-          </p>
-        </article>
-      </div>
-
-      <h3 style="margin-top:1.7rem;">ثانياً: طبيعة هوية الشخص متغيرة</h3>
-      <div class="philosopher-grid" style="margin-top:0.5rem;">
-        <article class="philo-card">
-          <div class="philo-name">آرثور شوبنهاور</div>
-          <div class="philo-pill">الإرادة</div>
-          <p class="philo-key">
-            العقل مجرد وظيفة من وظائف الدماغ، والذاكرة قد تضيع بضربة واحدة.
-            الشيء الثابت في الكائن الحي هو
-            <strong>إرادة الحياة</strong>، لذلك يعتبر أن أساس الهوية هو
-            الإرادة التي تدفعنا إلى الاستمرار والعيش.
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <!-- ---------- Synthesis ---------- -->
-    <section id="synthesis" class="reveal delay-1">
-      <h2>خلاصة تركيبية</h2>
-      <div class="grid grid-2">
-        <article class="card">
-          <div class="card-tag">خلاصة الدرس</div>
-          <ul>
-            <li>
-              لا يوجد جواب واحد نهائي: الفكر، الشعور، الذاكرة، الطبع،
-              اللاشعور، الإرادة… كلها عناصر تساهم في بناء الهوية.
-            </li>
-            <li>
-              يمكن اعتبار الهوية <strong>بنية مركّبة</strong> من هذه
-              العناصر، وليست شيئاً بسيطاً واحداً.
-            </li>
-            <li>
-              الشعور المستمر بالذات عبر الزمن (كما عند
-              <strong>لوك</strong>) يساعد على فهم كيف نبقى "نحن" رغم التغيّر.
-            </li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <div class="card-tag">موقف شخصي ممكن في الامتحان</div>
-          <p>
-            يمكن القول إن هوية الشخص تتكوّن من تداخل:
-            <strong>الفكر</strong> الذي يعطي الوعي، و
-            <strong>الشعور والذاكرة</strong> اللذين يربطان الماضي بالحاضر،
-            و<strong>الإرادة</strong> التي توجه اختياراته. بهذا تكون الهوية
-            مشروعاً يتكوّن باستمرار، وليست معطى جاهزاً.
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <!-- ---------- Exam / Text ---------- -->
-    <section id="exam" class="reveal delay-2">
-      <h2>نص تطبيقي وكيفية تحليله في الامتحان</h2>
-
-      <article class="card">
-        <div class="card-tag">خطوات تحليل نص حول الهوية الشخصية</div>
-        <ol style="margin-top:0.4rem; padding-right:1rem; font-size:0.93rem;">
-          <li style="margin-bottom:0.3rem;">
-            <strong>تحديد أطروحة النص:</strong>
-            مثلاً: يعتبر أن أساس الهوية هو الشعور المقترن بالفكر والذاكرة.
-          </li>
-          <li style="margin-bottom:0.3rem;">
-            <strong>شرح الحُجج:</strong>
-            كيف يربط الكاتب بين الشعور والأفعال الماضية، وكيف يجعل الامتداد
-            الزمني للشعور امتداداً للهوية.
-          </li>
-          <li style="margin-bottom:0.3rem;">
-            <strong>المناقشة:</strong>
-            تقارن موقف النص بمواقف ديكارت، فرويد، شوبنهاور… وتظهر
-            النقطَتين: القوة والقصور.
-          </li>
-          <li style="margin-bottom:0.3rem;">
-            <strong>التركيب والموقف الشخصي:</strong>
-            تبيّن أن الهوية تتكوّن من عدة أبعاد متداخلة: وعي، شعور، جسد،
-            ذاكرة، مجتمع…
-          </li>
-        </ol>
-        <p class="muted" style="margin-top:0.4rem;">
-          تذكّر أن الخاتمة في الامتحان يجب أن تلخّص الفكرة الأساسية
-          وتفتح سؤالاً جديداً: مثلاً علاقة الهوية بالغير أو بالحرية.
-        </p>
-      </article>
-    </section>
-
-    <footer>
-      الشخص والهوية – عرض مبسط مع حركات وانتقالات · يمكنك عرضه كأنه
-      PowerPoint تفاعلي داخل المتصفح.
-    </footer>
-  </main>
-
-  <!-- ---------- JavaScript: Scroll Animations ---------- -->
-  <script>
-    // Reveal-on-scroll using IntersectionObserver
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            // stop observing once visible
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.18 }
-    );
-
-    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
-  </script>
 </body>
 </html>
